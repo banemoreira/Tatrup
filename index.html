@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TATRUP CRM - Sistema de Informação</title>
 
-    <!-- Load React, ReactDOM, Babel, Lucide, and Tailwind -->
-    <script src="https://unpkg.com/react @18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom @18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/ @babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide-react @latest/dist/umd/lucide-react.js"></script>
-    <script src="https://cdn.tailwindcss.com "></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATRUP CRM - Sistema de Informação</title>
+    <link rel="icon" href="https://www.svgrepo.com/show/475463/tractor-3.svg" type="image/svg+xml">
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
     </style>
 </head>
+
 <body>
     <div id="root"></div>
 
-    <script type="text/babel" data-plugins="transform-react-jsx">
-        const { useState } = React;
+    <script type="text/babel">
+        const { useState, createElement } = React;
         const {
-            Users, Truck, FileText, BarChart3, Settings, Search, Plus,
-            Eye, Edit, Trash2, DollarSign, Calendar, Phone, Mail,
-            MapPin, Star, TrendingUp, AlertCircle, CheckCircle
+            Users, Truck, FileText, BarChart3, Settings, Search, Plus, Eye, Edit, Trash2,
+            DollarSign, Calendar, Phone, Mail, MapPin, Star, TrendingUp, AlertCircle, CheckCircle
         } = LucideReact;
 
         const TatrupCRM = () => {
             const [activeTab, setActiveTab] = useState('dashboard');
 
-            // Dummy Data
+            // --- DADOS DE EXEMPLO ---
             const clients = [
                 { id: 1, name: 'João Silva', nif: '123456789', phone: '912345678', email: 'joao@email.com', location: 'Porto', purchases: 2, status: 'Ativo' },
                 { id: 2, name: 'Maria Santos', nif: '987654321', phone: '913456789', email: 'maria@email.com', location: 'Lisboa', purchases: 1, status: 'Pendente' },
@@ -42,123 +42,50 @@
             ];
 
             const tractors = [
-                { id: 1, model: 'T-450 Pro', brand: 'TATRUP', power: '450cv', price: '85000€', stock: 5, status: 'Disponível', image: '🚜' },
-                { id: 2, model: 'T-350 Standard', brand: 'TATRUP', power: '350cv', price: '65000€', stock: 8, status: 'Disponível', image: '🚜' },
-                { id: 3, model: 'T-550 Heavy', brand: 'TATRUP', power: '550cv', price: '105000€', stock: 2, status: 'Baixo Stock', image: '🚜' }
+                { id: 1, model: 'T-450 Pro', brand: 'TATRUP', power: '450cv', price: '85.000€', stock: 5, status: 'Disponível', image: 'https://www.svgrepo.com/show/493754/tractor.svg' },
+                { id: 2, model: 'T-350 Standard', brand: 'TATRUP', power: '350cv', price: '65.000€', stock: 8, status: 'Disponível', image: 'https://www.svgrepo.com/show/493754/tractor.svg' },
+                { id: 3, model: 'T-550 Heavy', brand: 'TATRUP', power: '550cv', price: '105.000€', stock: 2, status: 'Baixo Stock', image: 'https://www.svgrepo.com/show/493754/tractor.svg' }
             ];
 
             const processes = [
-                { id: 1, client: 'João Silva', tractor: 'T-450 Pro', status: 'Financiamento', progress: 60, created: '2024-07-15', salesperson: 'Carlos' },
-                { id: 2, client: 'Maria Santos', tractor: 'T-350 Standard', status: 'Proposta', progress: 30, created: '2024-07-18', salesperson: 'Ana' },
-                { id: 3, client: 'António Costa', tractor: 'T-550 Heavy', status: 'Entrega', progress: 90, created: '2024-07-10', salesperson: 'Pedro' }
+                { id: 1, client: 'João Silva', tractor: 'T-450 Pro', status: 'Financiamento', progress: 60, created: '2025-07-15', salesperson: 'Carlos' },
+                { id: 2, client: 'Maria Santos', tractor: 'T-350 Standard', status: 'Proposta', progress: 30, created: '2025-07-18', salesperson: 'Ana' },
+                { id: 3, client: 'António Costa', tractor: 'T-550 Heavy', status: 'Entrega', progress: 90, created: '2025-07-10', salesperson: 'Pedro' }
             ];
 
-            const navigation = [
-                { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-                { id: 'clients', label: 'Clientes', icon: Users },
-                { id: 'tractors', label: 'Tratores', icon: Truck },
-                { id: 'processes', label: 'Processos', icon: FileText },
-                { id: 'reports', label: 'Relatórios', icon: BarChart3 },
-                { id: 'settings', label: 'Configurações', icon: Settings }
-            ];
+            // --- FUNÇÕES DE RENDERIZAÇÃO DAS PÁGINAS ---
 
             const renderDashboard = () => (
                 <div className="space-y-6">
-                    {/* KPI Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-blue-600 text-sm font-medium">Vendas Este Mês</p>
-                                    <p className="text-2xl font-bold text-blue-900">€245.000</p>
-                                </div>
-                                <DollarSign className="w-8 h-8 text-blue-600" />
-                            </div>
-                        </div>
-                        <div className="bg-green-50 p-6 rounded-lg border border-green-200">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-green-600 text-sm font-medium">Processos Ativos</p>
-                                    <p className="text-2xl font-bold text-green-900">23</p>
-                                </div>
-                                <FileText className="w-8 h-8 text-green-600" />
-                            </div>
-                        </div>
-                        <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-orange-600 text-sm font-medium">Stock Baixo</p>
-                                    <p className="text-2xl font-bold text-orange-900">4</p>
-                                </div>
-                                <AlertCircle className="w-8 h-8 text-orange-600" />
-                            </div>
-                        </div>
-                        <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-purple-600 text-sm font-medium">Novos Clientes</p>
-                                    <p className="text-2xl font-bold text-purple-900">12</p>
-                                </div>
-                                <Users className="w-8 h-8 text-purple-600" />
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Cards de Métricas */}
+                        <div className="bg-blue-50 p-6 rounded-lg border border-blue-200"><div className="flex items-center justify-between"><div><p className="text-blue-600 text-sm font-medium">Vendas Este Mês</p><p className="text-2xl font-bold text-blue-900">€245.000</p></div><DollarSign className="w-8 h-8 text-blue-600" /></div></div>
+                        <div className="bg-green-50 p-6 rounded-lg border border-green-200"><div className="flex items-center justify-between"><div><p className="text-green-600 text-sm font-medium">Processos Ativos</p><p className="text-2xl font-bold text-green-900">23</p></div><FileText className="w-8 h-8 text-green-600" /></div></div>
+                        <div className="bg-orange-50 p-6 rounded-lg border border-orange-200"><div className="flex items-center justify-between"><div><p className="text-orange-600 text-sm font-medium">Stock Baixo</p><p className="text-2xl font-bold text-orange-900">4</p></div><AlertCircle className="w-8 h-8 text-orange-600" /></div></div>
+                        <div className="bg-purple-50 p-6 rounded-lg border border-purple-200"><div className="flex items-center justify-between"><div><p className="text-purple-600 text-sm font-medium">Novos Clientes</p><p className="text-2xl font-bold text-purple-900">12</p></div><Users className="w-8 h-8 text-purple-600" /></div></div>
                     </div>
 
-                    {/* Recent Processes & Performance */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Processos Recentes */}
                         <div className="bg-white p-6 rounded-lg border">
                             <h3 className="text-lg font-semibold mb-4">Processos Recentes</h3>
                             <div className="space-y-3">
-                                {processes.length > 0 ? (
-                                    processes.slice(0, 3).map((proc) => (
-                                        <div key={proc.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
-                                            <div>
-                                                <p className="font-medium">{proc.client}</p>
-                                                <p className="text-sm text-gray-600">{proc.tractor}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <span
-                                                    className={`px-2 py-1 rounded text-xs font-medium ${
-                                                        proc.status === 'Entrega'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : proc.status === 'Financiamento'
-                                                            ? 'bg-yellow-100 text-yellow-800'
-                                                            : 'bg-blue-100 text-blue-800'
-                                                    }`}
-                                                >
-                                                    {proc.status}
-                                                </span>
-                                                <p className="text-sm text-gray-600 mt-1">{proc.progress}%</p>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500 text-sm">Nenhum processo encontrado.</p>
-                                )}
+                                {processes.slice(0, 3).map(process => (
+                                    <div key={process.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                                        <div><p className="font-medium">{process.client}</p><p className="text-sm text-gray-600">{process.tractor}</p></div>
+                                        <div className="text-right"><span className={`px-2 py-1 rounded text-xs font-medium ${process.status === 'Entrega' ? 'bg-green-100 text-green-800' : process.status === 'Financiamento' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}>{process.status}</span><p className="text-sm text-gray-600 mt-1">{process.progress}%</p></div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
+                        {/* Performance Vendedores */}
                         <div className="bg-white p-6 rounded-lg border">
                             <h3 className="text-lg font-semibold mb-4">Performance Vendedores</h3>
-                            <div className="space-y-4">
-                                {[
-                                    { name: 'Carlos Moreira', value: 85000, color: 'bg-green-500' },
-                                    { name: 'Ana Silva', value: 62000, color: 'bg-blue-500' },
-                                    { name: 'Pedro Santos', value: 45000, color: 'bg-orange-500' }
-                                ].map((seller, i) => (
-                                    <div key={i} className="flex items-center justify-between">
-                                        <span className="font-medium">{seller.name}</span>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                                <div
-                                                    className={`h-full ${seller.color} rounded-full`}
-                                                    style={{ width: `${(seller.value / 90000) * 100}%` }}
-                                                ></div>
-                                            </div>
-                                            <span className="text-sm font-medium">€{seller.value.toLocaleString()}</span>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between"><span>Carlos Moreira</span><div className="flex items-center"><div className="w-24 h-2 bg-gray-200 rounded mr-2"><div className="w-4/5 h-2 bg-green-500 rounded"></div></div><span className="text-sm">€85k</span></div></div>
+                                <div className="flex items-center justify-between"><span>Ana Silva</span><div className="flex items-center"><div className="w-24 h-2 bg-gray-200 rounded mr-2"><div className="w-3/5 h-2 bg-blue-500 rounded"></div></div><span className="text-sm">€62k</span></div></div>
+                                <div className="flex items-center justify-between"><span>Pedro Santos</span><div className="flex items-center"><div className="w-24 h-2 bg-gray-200 rounded mr-2"><div className="w-2/5 h-2 bg-orange-500 rounded"></div></div><span className="text-sm">€45k</span></div></div>
                             </div>
                         </div>
                     </div>
@@ -167,84 +94,25 @@
 
             const renderClients = () => (
                 <div className="space-y-6">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="flex justify-between items-center">
                         <h2 className="text-2xl font-bold">Gestão de Clientes</h2>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition">
-                            <Plus className="w-4 h-4" />
-                            Novo Cliente
-                        </button>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"><Plus className="w-4 h-4" />Novo Cliente</button>
                     </div>
 
-                    <div className="bg-white rounded-lg border overflow-hidden shadow-sm">
-                        <div className="p-4 border-b">
-                            <div className="relative max-w-md">
-                                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="text"
-                                    placeholder="Pesquisar clientes..."
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                />
-                            </div>
-                        </div>
-
+                    <div className="bg-white rounded-lg border overflow-hidden">
+                        <div className="p-4 border-b"><div className="relative"><Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" placeholder="Pesquisar clientes..." className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" /></div></div>
                         <div className="overflow-x-auto">
-                            <table className="w-full min-w-full">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Localização</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Compras</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-                                    </tr>
-                                </thead>
+                            <table className="w-full">
+                                <thead className="bg-gray-50"><tr><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Localização</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Compras</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th></tr></thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {clients.map((client) => (
-                                        <tr key={client.id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm font-medium text-gray-900">{client.name}</div>
-                                                <div className="text-sm text-gray-500">NIF: {client.nif}</div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <div className="text-sm text-gray-900 flex items-center gap-1">
-                                                    <Phone className="w-4 h-4 text-gray-500" /> {client.phone}
-                                                </div>
-                                                <div className="text-sm text-gray-500 flex items-center gap-1">
-                                                    <Mail className="w-4 h-4 text-gray-500" /> {client.email}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center gap-1">
-                                                    <MapPin className="w-4 h-4 text-gray-400" />
-                                                    <span className="text-sm text-gray-900">{client.location}</span>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{client.purchases}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span
-                                                    className={`px-2 py-1 text-xs font-medium rounded-full ${
-                                                        client.status === 'Ativo'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : 'bg-yellow-100 text-yellow-800'
-                                                    }`}
-                                                >
-                                                    {client.status}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <div className="flex gap-3">
-                                                    <button className="text-blue-600 hover:text-blue-900 transition">
-                                                        <Eye className="w-4 h-4" />
-                                                    </button>
-                                                    <button className="text-gray-600 hover:text-gray-900 transition">
-                                                        <Edit className="w-4 h-4" />
-                                                    </button>
-                                                    <button className="text-red-600 hover:text-red-900 transition">
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
+                                    {clients.map(client => (
+                                        <tr key={client.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4 whitespace-nowrap"><div><div className="text-sm font-medium text-gray-900">{client.name}</div><div className="text-sm text-gray-500">NIF: {client.nif}</div></div></td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900 flex items-center gap-2"><Phone className="w-4 h-4 text-gray-400" />{client.phone}</div><div className="text-sm text-gray-500 flex items-center gap-2 mt-1"><Mail className="w-4 h-4 text-gray-400" />{client.email}</div></td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-gray-400" /><span className="text-sm text-gray-900">{client.location}</span></div></td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{client.purchases}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><span className={`px-2 py-1 text-xs font-medium rounded-full ${client.status === 'Ativo' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{client.status}</span></td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"><div className="flex gap-3"><button className="text-blue-600 hover:text-blue-900 transition-colors"><Eye className="w-5 h-5" /></button><button className="text-gray-600 hover:text-gray-900 transition-colors"><Edit className="w-5 h-5" /></button><button className="text-red-600 hover:text-red-900 transition-colors"><Trash2 className="w-5 h-5" /></button></div></td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -254,92 +122,136 @@
                 </div>
             );
 
-            return (
-                <div className="min-h-screen bg-gray-100 flex flex-col">
-                    {/* Header */}
-                    <header className="bg-white shadow-sm border-b">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="flex justify-between items-center h-16">
-                                <div className="flex items-center">
-                                    <div className="text-2xl font-bold text-blue-600">TATRUP</div>
-                                    <span className="ml-2 text-gray-500">Sistema de Informação</span>
+            const renderTractors = () => (
+                <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl font-bold">Catálogo de Tratores</h2>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"><Plus className="w-4 h-4" />Novo Trator</button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {tractors.map(tractor => (
+                            <div key={tractor.id} className="bg-white rounded-lg border overflow-hidden group">
+                                <div className="p-4 bg-gray-100 flex justify-center items-center h-40">
+                                    <img src={tractor.image} alt={tractor.model} className="h-24 w-24 text-gray-400 transition-transform group-hover:scale-110" />
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="text-sm font-medium text-gray-700">Carlos Moreira</span>
-                                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                        CM
+                                <div className="p-4 space-y-2">
+                                    <h3 className="text-lg font-bold text-gray-900">{tractor.model}</h3>
+                                    <p className="text-sm text-gray-600">{tractor.brand} - {tractor.power}</p>
+                                    <div className="flex justify-between items-center pt-2">
+                                        <p className="text-xl font-semibold text-blue-600">{tractor.price}</p>
+                                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${tractor.status === 'Disponível' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`}>{tractor.status}</span>
                                     </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const renderProcesses = () => (
+                <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl font-bold">Gestão de Processos</h2>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"><Plus className="w-4 h-4" />Novo Processo</button>
+                    </div>
+                    <div className="bg-white rounded-lg border overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-gray-50"><tr><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente / Trator</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progresso</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th></tr></thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {processes.map(process => (
+                                        <tr key={process.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4 whitespace-nowrap"><div><div className="text-sm font-medium text-gray-900">{process.client}</div><div className="text-sm text-gray-500">{process.tractor}</div></div></td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{process.created}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><span className={`px-2 py-1 rounded text-xs font-medium ${process.status === 'Entrega' ? 'bg-green-100 text-green-800' : process.status === 'Financiamento' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}>{process.status}</span></td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-blue-600 h-2 rounded-full" style={{ width: `${process.progress}%` }}></div></div>
+                                                    <span className="text-sm text-gray-600">{process.progress}%</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"><div className="flex gap-3"><button className="text-blue-600 hover:text-blue-900 transition-colors"><Eye className="w-5 h-5" /></button><button className="text-gray-600 hover:text-gray-900 transition-colors"><Edit className="w-5 h-5" /></button></div></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            // Placeholder para páginas não implementadas
+            const renderPlaceholder = (title, description, Icon) => (
+                <div className="text-center py-20 bg-white rounded-lg border">
+                    <Icon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-medium text-gray-800 mb-2">{title}</h3>
+                    <p className="text-gray-500 max-w-md mx-auto">{description}</p>
+                </div>
+            );
+
+            const navigation = [
+                { id: 'dashboard', label: 'Dashboard', icon: BarChart3, render: renderDashboard },
+                { id: 'clients', label: 'Clientes', icon: Users, render: renderClients },
+                { id: 'tractors', label: 'Tratores', icon: Truck, render: renderTractors },
+                { id: 'processes', label: 'Processos', icon: FileText, render: renderProcesses },
+                { id: 'reports', label: 'Relatórios', icon: BarChart3, render: () => renderPlaceholder("Relatórios", "Análises e relatórios de performance.", BarChart3) },
+                { id: 'settings', label: 'Configurações', icon: Settings, render: () => renderPlaceholder("Configurações", "Gestão de utilizadores, permissões e configurações do sistema.", Settings) }
+            ];
+
+            const activeNavItem = navigation.find(item => item.id === activeTab);
+
+            return (
+                <div className="min-h-screen bg-gray-100">
+                    {/* Header */}
+                    <header className="bg-white shadow-sm border-b sticky top-0 z-10">
+                        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between items-center h-16">
+                                <div className="flex items-center gap-4">
+                                    <Truck className="w-8 h-8 text-blue-600" />
+                                    <div className="text-2xl font-bold text-blue-600">TATRUP</div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <span className="text-sm text-gray-600 hidden sm:block">Carlos Moreira</span>
+                                    <div className="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">CM</div>
                                 </div>
                             </div>
                         </div>
                     </header>
 
-                    <div className="flex flex-1">
+                    <div className="flex">
                         {/* Sidebar */}
-                        <nav className="w-64 bg-white shadow-sm h-full min-h-0">
-                            <div className="p-4">
-                                <ul className="space-y-1">
-                                    {navigation.map((item) => (
-                                        <li key={item.id}>
-                                            <button
-                                                onClick={() => setActiveTab(item.id)}
-                                                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
-                                                    activeTab === item.id
-                                                        ? 'bg-blue-100 text-blue-700 font-semibold shadow-inner'
-                                                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                        <nav className="w-64 bg-white shadow-sm min-h-[calc(100vh-64px)] p-4">
+                            <ul className="space-y-2">
+                                {navigation.map(item => (
+                                    <li key={item.id}>
+                                        <button
+                                            onClick={() => setActiveTab(item.id)}
+                                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${activeTab === item.id
+                                                    ? 'bg-blue-100 text-blue-700 font-medium'
+                                                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                                                 }`}
-                                            >
-                                                <item.icon className="w-5 h-5" />
-                                                {item.label}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                                        >
+                                            <item.icon className="w-5 h-5" />
+                                            {item.label}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
                         </nav>
 
                         {/* Main Content */}
-                        <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
-                            {activeTab === 'dashboard' && renderDashboard()}
-                            {activeTab === 'clients' && renderClients()}
-                            {activeTab === 'tractors' && (
-                                <div className="bg-white p-8 rounded-lg shadow text-center max-w-md mx-auto">
-                                    <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Catálogo de Tratores</h3>
-                                    <p className="text-gray-600">Gestão completa do inventário e catálogo de produtos.</p>
-                                </div>
-                            )}
-                            {activeTab === 'processes' && (
-                                <div className="bg-white p-8 rounded-lg shadow text-center max-w-md mx-auto">
-                                    <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Gestão de Processos</h3>
-                                    <p className="text-gray-600">Acompanhamento detalhado de vendas e processos comerciais.</p>
-                                </div>
-                            )}
-                            {activeTab === 'reports' && (
-                                <div className="bg-white p-8 rounded-lg shadow text-center max-w-md mx-auto">
-                                    <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Relatórios</h3>
-                                    <p className="text-gray-600">Análises e relatórios de desempenho e resultados.</p>
-                                </div>
-                            )}
-                            {activeTab === 'settings' && (
-                                <div className="bg-white p-8 rounded-lg shadow text-center max-w-md mx-auto">
-                                    <Settings className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Configurações</h3>
-                                    <p className="text-gray-600">Gestão de utilizadores, permissões e configurações do sistema.</p>
-                                </div>
-                            )}
+                        <main className="flex-1 p-6 lg:p-8">
+                            {activeNavItem && activeNavItem.render()}
                         </main>
                     </div>
                 </div>
             );
         };
 
-        // Use createRoot (React 18)
-        const container = document.getElementById('root');
-        const root = ReactDOM.createRoot(container);
-        root.render(<TatrupCRM />);
+        // Utiliza a nova API do React 18 para renderizar a aplicação
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(createElement(TatrupCRM));
     </script>
 </body>
+
 </html>
